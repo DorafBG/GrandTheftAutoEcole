@@ -20,6 +20,7 @@ include_directories(${GLM_DIR})
 set(SOURCES
     ${SRC_DIR}/main.cpp
     ${SRC_DIR}/ground.cpp
+    ${SRC_DIR}/voiture.cpp
     ${SRC_DIR}/node.cpp
     ${SRC_DIR}/shape.cpp
     ${SRC_DIR}/shader.cpp

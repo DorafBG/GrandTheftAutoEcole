@@ -4,6 +4,7 @@
 #include <glm/glm.hpp>
 #include "glm/ext.hpp"
 #include <glm/gtc/matrix_transform.hpp>
+#include <voiture.h>
 
 Viewer::Viewer(int width, int height)
 {
@@ -79,7 +80,12 @@ void Viewer::run()
         delta_time = current_frame - last_frame;
         last_frame = current_frame;
 
-        // Gestion clavier
+        // Limiter le delta_time pour éviter les sauts trop grands
+        if (delta_time > 0.1f)
+            delta_time = 0.1f;
+
+        //Gestion clavier (PERMET DE NAVIGUER SUR LA MAP : UTILE POUR DEBUG)
+        /*
         float velocity = camera_speed * delta_time;
         if (glfwGetKey(win, GLFW_KEY_W) == GLFW_PRESS)
             camera_pos += velocity * camera_front;
@@ -88,10 +94,66 @@ void Viewer::run()
         if (glfwGetKey(win, GLFW_KEY_A) == GLFW_PRESS)
             camera_pos -= glm::normalize(glm::cross(camera_front, camera_up)) * velocity;
         if (glfwGetKey(win, GLFW_KEY_D) == GLFW_PRESS)
-            camera_pos += glm::normalize(glm::cross(camera_front, camera_up)) * velocity;
+            camera_pos += glm::normalize(glm::cross(camera_front, camera_up)) * velocity; */
+
+        float vitesse = 3.0f * delta_time;        // vitesse de deplacement
+        float vitesse_rotation = 90.0f * delta_time; // degres/s lors de la pivotation gauche/droite
+
+        glm::mat4 transform = voiture_node->getTransform(); //matrice de transformation actuelle
+        glm::vec3 direction = -glm::normalize(glm::vec3(transform[2][0], 0.0f, transform[2][2])); //direction actuelle
+        glm::vec3 position = glm::vec3(transform[3][0], transform[3][1], transform[3][2]); //position actuelle
+        glm::vec3 right = glm::normalize(glm::vec3(transform[0][0], 0.0f, transform[0][2]));//Direction perpendiculaire
+        float currentYRotation = atan2(transform[2][0], transform[2][2]); // ROTATION actuelle de la voiture
+
+        // GESTION DU DEPLACEMENT DE LA VOITURE
+        if (glfwGetKey(win, GLFW_KEY_W) == GLFW_PRESS || glfwGetKey(win, GLFW_KEY_Z) == GLFW_PRESS)
+        {
+            // la voiture avance
+            position += direction * vitesse;
+        }
+
+        if (glfwGetKey(win, GLFW_KEY_S) == GLFW_PRESS)
+        {
+            // la voiture recule
+            position -= direction * vitesse;
+        }
+
+        // Mettre à jour l'angle de rotation si nécessaire
+        if (glfwGetKey(win, GLFW_KEY_A) == GLFW_PRESS || glfwGetKey(win, GLFW_KEY_Q) == GLFW_PRESS)
+        {
+            // On tourne a gauche
+            currentYRotation += glm::radians(vitesse_rotation);
+        }
+
+        if (glfwGetKey(win, GLFW_KEY_D) == GLFW_PRESS)
+        {
+            // On tourne a droite
+            currentYRotation -= glm::radians(vitesse_rotation);
+        }
+
+        // On reconstruit la matrice de transformation de la voiture :
+        glm::mat4 newTransform = glm::mat4(1.0f);
+        newTransform = glm::translate(newTransform, position); //nouvelle position
+        newTransform = glm::rotate(newTransform, currentYRotation, glm::vec3(0.0f, 1.0f, 0.0f));//nouvelle rotation
+        glm::vec3 scale; // on reprend la meme echelle
+        scale.x = glm::length(glm::vec3(transform[0][0], transform[0][1], transform[0][2]));
+        scale.y = glm::length(glm::vec3(transform[1][0], transform[1][1], transform[1][2]));
+        scale.z = glm::length(glm::vec3(transform[2][0], transform[2][1], transform[2][2]));
+        newTransform = glm::scale(newTransform, scale);
+        
+        // Puis on applique la nouvelle transformation de la voiture
+        voiture_node->setTransform(newTransform);
+
+        // LOGS VOITURE
+        glm::mat4 voiture_transform = voiture_node->getTransform();
+        glm::vec3 voiture_pos(voiture_transform[3][0], voiture_transform[3][1], voiture_transform[3][2]);
+        std::cout << "Voiture position: ("
+            << voiture_pos.x << ", "
+            << voiture_pos.y << ", "
+            << voiture_pos.z << ")\n";
 
         // LOGS CAMERA
-        std::cout << "Camera position: ("
+        /*std::cout << "Camera position: ("
             << camera_pos.x << ", "
             << camera_pos.y << ", "
             << camera_pos.z << ")\n";
@@ -99,7 +161,7 @@ void Viewer::run()
         std::cout << "Camera front: ("
             << camera_front.x << ", "
             << camera_front.y << ", "
-            << camera_front.z << ")\n";
+            << camera_front.z << ")\n";*/
 
 
         glm::mat4 view = glm::lookAt(camera_pos, camera_pos + camera_front, camera_up);

@@ -99,7 +99,8 @@ void Viewer::run()
         float vitesse = 3.0f * delta_time;        // vitesse de deplacement
         float vitesse_rotation = 90.0f * delta_time; // degres/s lors de la pivotation gauche/droite
 
-        glm::mat4 transform = voiture_node->getTransform(); //matrice de transformation actuelle
+        // On gere la voiture ici :
+        glm::mat4 transform = voiture_node->getTransform(); //matrice de transformation actuelle de la voiture
         glm::vec3 direction = -glm::normalize(glm::vec3(transform[2][0], 0.0f, transform[2][2])); //direction actuelle
         glm::vec3 position = glm::vec3(transform[3][0], transform[3][1], transform[3][2]); //position actuelle
         glm::vec3 right = glm::normalize(glm::vec3(transform[0][0], 0.0f, transform[0][2]));//Direction perpendiculaire
@@ -140,9 +141,13 @@ void Viewer::run()
         scale.y = glm::length(glm::vec3(transform[1][0], transform[1][1], transform[1][2]));
         scale.z = glm::length(glm::vec3(transform[2][0], transform[2][1], transform[2][2]));
         newTransform = glm::scale(newTransform, scale);
-        
         // Puis on applique la nouvelle transformation de la voiture
         voiture_node->setTransform(newTransform);
+
+        // On met a jour la position de la camera
+        glm::vec3 voiture_camera_offset(-6.0f, 15.0f, 0.0f); // pos de la cam par rapport a la voiture (10 de hauteur, 5 vers le bas)
+        camera_pos = position + voiture_camera_offset;
+        // il faut changer le front camera
 
         // LOGS VOITURE
         glm::mat4 voiture_transform = voiture_node->getTransform();
@@ -153,7 +158,7 @@ void Viewer::run()
             << voiture_pos.z << ")\n";
 
         // LOGS CAMERA
-        /*std::cout << "Camera position: ("
+        std::cout << "Camera position: ("
             << camera_pos.x << ", "
             << camera_pos.y << ", "
             << camera_pos.z << ")\n";
@@ -161,7 +166,7 @@ void Viewer::run()
         std::cout << "Camera front: ("
             << camera_front.x << ", "
             << camera_front.y << ", "
-            << camera_front.z << ")\n";*/
+            << camera_front.z << ")\n";
 
 
         glm::mat4 view = glm::lookAt(camera_pos, camera_pos + camera_front, camera_up);

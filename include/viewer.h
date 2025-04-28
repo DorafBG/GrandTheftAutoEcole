@@ -20,8 +20,8 @@ public:
     Node *scene_root;
 
     // Camera control
-    glm::vec3 camera_pos = glm::vec3(-4.73608f, 22.9012f, -2.93041f); // coordonnees camera
-    glm::vec3 camera_front = glm::vec3(0.0174523f, -0.999848f, -0.000001f);//la camera regarde vers le sol (quand je mets x=0 et z=0, elle ne regarde plus le sol jsp pk)
+    glm::vec3 camera_pos = glm::vec3(-4.73608f, 22.9012f, -2.93041f); // coordonnees camera par defaut
+    glm::vec3 camera_front = glm::vec3(0.586349f, -0.810042f, -0.00511719f);//la camera regarde vers le sol (quand je mets x=0 et z=0, elle ne regarde plus le sol jsp pk)
     glm::vec3 camera_up = glm::vec3(0.0f, 1.0f, 0.0f);
 
     Node* voiture_node;  // pointeur vers le noeud de la voiture

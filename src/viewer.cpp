@@ -21,7 +21,7 @@ Viewer::Viewer(int width, int height)
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
     
-    win = glfwCreateWindow(width, height, "Viewer", NULL, NULL);
+    win = glfwCreateWindow(width, height, "GrandTheftAutoEcole", NULL, NULL);
 
     if (win == NULL) {
         std::cerr << "Failed to create window" << std::endl;
@@ -68,9 +68,11 @@ Viewer::Viewer(int width, int height)
 
 void Viewer::run()
 {
+    glm::vec3 last_position_voiture;
     // Main render loop for this OpenGL window
     while (!glfwWindowShouldClose(win))
     {
+
         // clear draw buffer
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -99,10 +101,11 @@ void Viewer::run()
         float vitesse = 3.0f * delta_time;        // vitesse de deplacement
         float vitesse_rotation = 90.0f * delta_time; // degres/s lors de la pivotation gauche/droite
 
+
         // On gere la voiture ici :
         glm::mat4 transform = voiture_node->getTransform(); //matrice de transformation actuelle de la voiture
         glm::vec3 direction = -glm::normalize(glm::vec3(transform[2][0], 0.0f, transform[2][2])); //direction actuelle
-        glm::vec3 position = glm::vec3(transform[3][0], transform[3][1], transform[3][2]); //position actuelle
+        glm::vec3 position = glm::vec3(transform[3][0], transform[3][1], transform[3][2]); //position actuelle de la voiture
         glm::vec3 right = glm::normalize(glm::vec3(transform[0][0], 0.0f, transform[0][2]));//Direction perpendiculaire
         float currentYRotation = atan2(transform[2][0], transform[2][2]); // ROTATION actuelle de la voiture
 
@@ -144,10 +147,15 @@ void Viewer::run()
         // Puis on applique la nouvelle transformation de la voiture
         voiture_node->setTransform(newTransform);
 
-        // On met a jour la position de la camera
-        glm::vec3 voiture_camera_offset(-6.0f, 15.0f, 0.0f); // pos de la cam par rapport a la voiture (10 de hauteur, 5 vers le bas)
-        camera_pos = position + voiture_camera_offset;
-        // il faut changer le front camera
+        // On change la position de la camera pour qu'elle suive la voiture de derrière
+        glm::vec3 voiture_direction = -glm::normalize(glm::vec3(newTransform[2])); // direction vers l'avant
+        glm::vec3 voiture_up = glm::normalize(glm::vec3(newTransform[1]));         // vecteur haut
+        glm::vec3 offset = -voiture_direction * 9.0f + voiture_up * 10.0f; // (9 vers derriere et 10 de hauteur)
+        camera_pos = position + offset;
+        // il faut changer le front camera (l'orientation)
+        glm::vec3 pointToLook = position + glm::vec3(0.0f, 3.0f, 0.0f); // (3 vers le haut)
+        camera_front = glm::normalize(pointToLook - camera_pos); // la camera va regarder le pointToLook
+
 
         // LOGS VOITURE
         glm::mat4 voiture_transform = voiture_node->getTransform();
@@ -181,6 +189,15 @@ void Viewer::run()
 
         // flush render commands, and swap draw buffers
         glfwSwapBuffers(win);
+
+        // affichage de la vitesse reelle de la voiture dans le titre de la fenetre
+        float distance = glm::length(position - last_position_voiture);
+        float vitesse_reelle = distance / delta_time;
+        float vitesse_kmh = vitesse_reelle * 3.6f;
+        std::string title = "GrandTheftAutoEcole - Vitesse: " + std::to_string(vitesse_kmh) + " km/h";
+        glfwSetWindowTitle(win, title.c_str());
+        last_position_voiture = position;
+
     }
 
     /* close GL context and any other GLFW resources */

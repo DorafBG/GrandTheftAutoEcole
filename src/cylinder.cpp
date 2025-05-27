@@ -3,6 +3,7 @@
 #include <glm/glm.hpp>
 #include "glm/ext.hpp"
 #include <glm/gtc/matrix_transform.hpp>
+#include <texture.h>
 
 Cylinder::Cylinder(Shader *shader_program, float height, float radius, int slices)
     : Shape(shader_program)

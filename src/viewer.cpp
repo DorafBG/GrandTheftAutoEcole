@@ -98,7 +98,9 @@ void Viewer::run()
         if (glfwGetKey(win, GLFW_KEY_D) == GLFW_PRESS)
             camera_pos += glm::normalize(glm::cross(camera_front, camera_up)) * velocity; */
 
-        float vitesse = 3.0f * delta_time;        // vitesse de deplacement
+        float vitesse_avant = 7.0f * delta_time;        // vitesse de deplacement avant
+        float vitesse_sprint = 8.0 * delta_time;
+        float vitesse_recul = 4.0 * delta_time;         //vitesse de recul
         float vitesse_rotation = 90.0f * delta_time; // degres/s lors de la pivotation gauche/droite
 
 
@@ -113,27 +115,51 @@ void Viewer::run()
         if (glfwGetKey(win, GLFW_KEY_W) == GLFW_PRESS || glfwGetKey(win, GLFW_KEY_Z) == GLFW_PRESS)
         {
             // la voiture avance
-            position += direction * vitesse;
+            position += direction * vitesse_avant;
+            
+            if (glfwGetKey(win, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+            {
+                position += direction * vitesse_sprint;
+            }
+            // Mettre à jour l'angle de rotation si nécessaire
+            if (glfwGetKey(win, GLFW_KEY_A) == GLFW_PRESS || glfwGetKey(win, GLFW_KEY_Q) == GLFW_PRESS)
+            {
+                // On tourne a gauche
+                currentYRotation += glm::radians(vitesse_rotation);
+                angleRoues = 20.0f;
+            }
+
+            if (glfwGetKey(win, GLFW_KEY_D) == GLFW_PRESS)
+            {
+                // On tourne a droite
+                currentYRotation -= glm::radians(vitesse_rotation);
+                angleRoues = -20.0f;
+            }
+            angleRoues = 0.0f;
         }
 
         if (glfwGetKey(win, GLFW_KEY_S) == GLFW_PRESS)
         {
             // la voiture recule
-            position -= direction * vitesse;
+            position -= direction * vitesse_recul;
+            // Mettre à jour l'angle de rotation si nécessaire
+            if (glfwGetKey(win, GLFW_KEY_A) == GLFW_PRESS || glfwGetKey(win, GLFW_KEY_Q) == GLFW_PRESS)
+            {
+                // On tourne a gauche
+                currentYRotation -= glm::radians(vitesse_rotation);
+                angleRoues = 20.0f;
+            }
+
+            if (glfwGetKey(win, GLFW_KEY_D) == GLFW_PRESS)
+            {
+                // On tourne a droite
+                currentYRotation += glm::radians(vitesse_rotation);
+                angleRoues = -20.0f;
+            }
+            angleRoues = 0.0f;
         }
 
-        // Mettre à jour l'angle de rotation si nécessaire
-        if (glfwGetKey(win, GLFW_KEY_A) == GLFW_PRESS || glfwGetKey(win, GLFW_KEY_Q) == GLFW_PRESS)
-        {
-            // On tourne a gauche
-            currentYRotation += glm::radians(vitesse_rotation);
-        }
 
-        if (glfwGetKey(win, GLFW_KEY_D) == GLFW_PRESS)
-        {
-            // On tourne a droite
-            currentYRotation -= glm::radians(vitesse_rotation);
-        }
 
         // On reconstruit la matrice de transformation de la voiture :
         glm::mat4 newTransform = glm::mat4(1.0f);
@@ -147,15 +173,20 @@ void Viewer::run()
         // Puis on applique la nouvelle transformation de la voiture
         voiture_node->setTransform(newTransform);
 
+
+
         // On change la position de la camera pour qu'elle suive la voiture de derrière
-        glm::vec3 voiture_direction = -glm::normalize(glm::vec3(newTransform[2])); // direction vers l'avant
+        /*glm::vec3 voiture_direction = -glm::normalize(glm::vec3(newTransform[2])); // direction vers l'avant
         glm::vec3 voiture_up = glm::normalize(glm::vec3(newTransform[1]));         // vecteur haut
         glm::vec3 offset = -voiture_direction * 9.0f + voiture_up * 10.0f; // (9 vers derriere et 10 de hauteur)
         camera_pos = position + offset;
         // il faut changer le front camera (l'orientation)
         glm::vec3 pointToLook = position + glm::vec3(0.0f, 3.0f, 0.0f); // (3 vers le haut)
-        camera_front = glm::normalize(pointToLook - camera_pos); // la camera va regarder le pointToLook
+        camera_front = glm::normalize(pointToLook - camera_pos); // la camera va regarder le pointToLook*/
 
+
+
+        
 
         // LOGS VOITURE
         glm::mat4 voiture_transform = voiture_node->getTransform();
@@ -177,7 +208,24 @@ void Viewer::run()
             << camera_front.z << ")\n";
 
 
-        glm::mat4 view = glm::lookAt(camera_pos, camera_pos + camera_front, camera_up);
+
+        float camera_x = voiture_pos.x + camera_distance * cos(glm::radians(camera_yaw)) * cos(glm::radians(camera_pitch));
+        float camera_y = voiture_pos.y + camera_height_offset + camera_distance * sin(glm::radians(camera_pitch));
+        float camera_z = voiture_pos.z + camera_distance * sin(glm::radians(camera_yaw)) * cos(glm::radians(camera_pitch));
+
+        camera_pos = glm::vec3(camera_x, camera_y, camera_z);
+
+        // La caméra regarde toujours vers la voiture
+        glm::vec3 camera_target = voiture_pos + glm::vec3(0.0f, 1.0f, 0.0f); // Légèrement au-dessus du centre de la voiture
+
+        //// Calculer la matrice de vue
+        glm::mat4 view = glm::lookAt(camera_pos, camera_target, glm::vec3(0.0f, 1.0f, 0.0f));
+
+
+
+
+
+        //glm::mat4 view = glm::lookAt(camera_pos, camera_pos + camera_front, camera_up);
 
         float renderDistance = 500.0f;
         glm::mat4 projection = glm::perspective(glm::radians(45.0f), 1.0f, 0.1f, renderDistance);
@@ -220,28 +268,37 @@ void Viewer::on_mouse_move(double xpos, double ypos)
     }
 
     float xoffset = xpos - last_x;
-    float yoffset = last_y - ypos; // inversé car coordonnées y montent vers le bas
+    float yoffset = ypos - last_y; // inversé car coordonnées y montent vers le bas
 
     last_x = xpos;
     last_y = ypos;
 
     float sensitivity = 0.1f;
     xoffset *= sensitivity;
-    yoffset *= sensitivity;
+    yoffset *= sensitivity; 
 
-    yaw += xoffset;
-    pitch += yoffset;
+    //yaw += xoffset;
+    //pitch += yoffset;
 
-    if (pitch > 89.0f)
-        pitch = 89.0f;
-    if (pitch < -89.0f)
-        pitch = -89.0f;
+    //if (pitch > 89.0f)
+    //    pitch = 89.0f;
+    //if (pitch < -89.0f)
+    //    pitch = -89.0f;
 
-    glm::vec3 direction;
-    direction.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
-    direction.y = sin(glm::radians(pitch));
-    direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
-    camera_front = glm::normalize(direction);
+    camera_yaw += xoffset;
+    camera_pitch += yoffset;
+
+    // Limiter l'angle vertical pour éviter les retournements
+    if (camera_pitch > 45.0f)
+        camera_pitch = 45.0f;
+    if (camera_pitch < -3.0f)        // CHANGÉ: limite à 0° (horizontal) au lieu de -80°
+        camera_pitch = -3.0f;
+
+    //glm::vec3 direction;
+    //direction.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
+    //direction.y = sin(glm::radians(pitch));
+    //direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+    //camera_front = glm::normalize(direction);
 }
 
 

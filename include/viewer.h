@@ -12,12 +12,12 @@
 
 class Viewer {
 public:
-    Viewer(int width=640, int height=480);
+    Viewer(int width = 640, int height = 480);
 
     void run();
     void on_key(int key);
 
-    Node *scene_root;
+    Node* scene_root;
 
     // Camera control
     glm::vec3 camera_pos = glm::vec3(-4.73608f, 22.9012f, -2.93041f); // coordonnees camera par defaut
@@ -33,8 +33,15 @@ public:
     bool first_mouse = true;
     float camera_speed = 20.5f;
 
+    float camera_distance = 10.0f;
+    float camera_height_offset = 3.0f;
+    float camera_yaw = 0.0f;
+    float camera_pitch = -20.0f;
+
     float delta_time = 0.0f;
     float last_frame = 0.0f;
+
+    float angleRoues = 0.0f;
 
     static void cursor_position_callback_static(GLFWwindow* window, double xpos, double ypos);
     void on_mouse_move(double xpos, double ypos);

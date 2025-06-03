@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-Pyramid::Pyramid(Shader *shader_program) : Shape(shader_program) 
+Pyramid::Pyramid(Shader *shader_program, const glm::vec3& color) : Shape(shader_program), color_(color)
 {
     // Pyramid vertex positions
     GLfloat vertex_buffer_data[] = {
@@ -45,6 +45,10 @@ Pyramid::Pyramid(Shader *shader_program) : Shape(shader_program)
 void Pyramid::draw(glm::mat4& model, glm::mat4& view, glm::mat4& projection)
 {   
     glUseProgram(this->shader_program_);
+
+    // Envoie la couleur au shader
+    GLint colorLoc = glGetUniformLocation(this->shader_program_, "uColor");
+    glUniform3fv(colorLoc, 1, &color_[0]);
 
     glBindVertexArray(VAO);
     

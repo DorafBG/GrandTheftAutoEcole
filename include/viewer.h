@@ -9,6 +9,8 @@
 
 #include "shader.h"
 #include "node.h"
+#include <vector>
+#include "eolienne.h"
 
 class Viewer {
 public:
@@ -45,6 +47,8 @@ public:
 
     static void cursor_position_callback_static(GLFWwindow* window, double xpos, double ypos);
     void on_mouse_move(double xpos, double ypos);
+
+    std::vector<Eolienne*> eoliennes;
 
 
 private:

@@ -4,6 +4,7 @@
 in vec3 position;
 
 // global matrix variables
+uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
 
@@ -14,5 +15,6 @@ void main() {
 
     fragColor = position;
     // tell OpenGL how to transform the vertex to clip coordinates
-    gl_Position = projection * view * vec4(position, 1);
+    gl_Position = projection * view * model * vec4(position, 1);
+
 }

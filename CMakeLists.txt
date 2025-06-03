@@ -27,6 +27,9 @@ set(SOURCES
     ${SRC_DIR}/viewer.cpp
     ${SRC_DIR}/triangle.cpp
     ${SRC_DIR}/pyramid.cpp
+    ${SRC_DIR}/eolienne.cpp
+    ${SRC_DIR}/cube.cpp  
+    ${SRC_DIR}/maison.cpp
     ${SRC_DIR}/cylinder.cpp
     ${SRC_DIR}/sphere.cpp
     ${SRC_DIR}/texture.cpp

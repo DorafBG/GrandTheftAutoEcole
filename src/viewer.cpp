@@ -82,9 +82,14 @@ void Viewer::run()
         delta_time = current_frame - last_frame;
         last_frame = current_frame;
 
-        // Limiter le delta_time pour éviter les sauts trop grands
+        // Limiter le delta_time pour ï¿½viter les sauts trop grands
         if (delta_time > 0.1f)
             delta_time = 0.1f;
+
+        for (Eolienne* e : eoliennes) {
+                if (e) e->update(delta_time);
+            }
+
 
         //Gestion clavier (PERMET DE NAVIGUER SUR LA MAP : UTILE POUR DEBUG)
         /*
@@ -121,7 +126,7 @@ void Viewer::run()
             {
                 position += direction * vitesse_sprint;
             }
-            // Mettre à jour l'angle de rotation si nécessaire
+            // Mettre ï¿½ jour l'angle de rotation si nï¿½cessaire
             if (glfwGetKey(win, GLFW_KEY_A) == GLFW_PRESS || glfwGetKey(win, GLFW_KEY_Q) == GLFW_PRESS)
             {
                 // On tourne a gauche
@@ -142,7 +147,7 @@ void Viewer::run()
         {
             // la voiture recule
             position -= direction * vitesse_recul;
-            // Mettre à jour l'angle de rotation si nécessaire
+            // Mettre ï¿½ jour l'angle de rotation si nï¿½cessaire
             if (glfwGetKey(win, GLFW_KEY_A) == GLFW_PRESS || glfwGetKey(win, GLFW_KEY_Q) == GLFW_PRESS)
             {
                 // On tourne a gauche
@@ -175,7 +180,7 @@ void Viewer::run()
 
 
 
-        // On change la position de la camera pour qu'elle suive la voiture de derrière
+        // On change la position de la camera pour qu'elle suive la voiture de derriï¿½re
         /*glm::vec3 voiture_direction = -glm::normalize(glm::vec3(newTransform[2])); // direction vers l'avant
         glm::vec3 voiture_up = glm::normalize(glm::vec3(newTransform[1]));         // vecteur haut
         glm::vec3 offset = -voiture_direction * 9.0f + voiture_up * 10.0f; // (9 vers derriere et 10 de hauteur)
@@ -215,8 +220,8 @@ void Viewer::run()
 
         camera_pos = glm::vec3(camera_x, camera_y, camera_z);
 
-        // La caméra regarde toujours vers la voiture
-        glm::vec3 camera_target = voiture_pos + glm::vec3(0.0f, 1.0f, 0.0f); // Légèrement au-dessus du centre de la voiture
+        // La camï¿½ra regarde toujours vers la voiture
+        glm::vec3 camera_target = voiture_pos + glm::vec3(0.0f, 1.0f, 0.0f); // Lï¿½gï¿½rement au-dessus du centre de la voiture
 
         //// Calculer la matrice de vue
         glm::mat4 view = glm::lookAt(camera_pos, camera_target, glm::vec3(0.0f, 1.0f, 0.0f));
@@ -268,7 +273,7 @@ void Viewer::on_mouse_move(double xpos, double ypos)
     }
 
     float xoffset = xpos - last_x;
-    float yoffset = ypos - last_y; // inversé car coordonnées y montent vers le bas
+    float yoffset = ypos - last_y; // inversï¿½ car coordonnï¿½es y montent vers le bas
 
     last_x = xpos;
     last_y = ypos;
@@ -288,10 +293,10 @@ void Viewer::on_mouse_move(double xpos, double ypos)
     camera_yaw += xoffset;
     camera_pitch += yoffset;
 
-    // Limiter l'angle vertical pour éviter les retournements
+    // Limiter l'angle vertical pour ï¿½viter les retournements
     if (camera_pitch > 45.0f)
         camera_pitch = 45.0f;
-    if (camera_pitch < -3.0f)        // CHANGÉ: limite à 0° (horizontal) au lieu de -80°
+    if (camera_pitch < -3.0f)        // CHANGï¿½: limite ï¿½ 0ï¿½ (horizontal) au lieu de -80ï¿½
         camera_pitch = -3.0f;
 
     //glm::vec3 direction;

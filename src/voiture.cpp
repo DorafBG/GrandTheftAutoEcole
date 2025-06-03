@@ -1,6 +1,6 @@
 #include "voiture.h"
 #include <iostream>
-#include <winsock.h>
+//#include <winsock.h>
 #include <ground.h>
 
 Voiture::Voiture(Shader* shader_program, Texture* texture_bleu, Texture* texture_noir)
@@ -9,7 +9,7 @@ Voiture::Voiture(Shader* shader_program, Texture* texture_bleu, Texture* texture
     // cube ecrase pr faire une voiture
     float vertices[] = {
         // positions           // UV coords
-        // côté droit        
+        // cï¿½tï¿½ droit        
         0.3f,  0.32f, -1.0f,  0.0f, 0.0f, //0
         0.5f,  0.32f, -0.9f,  0.0f, 0.0f, //1
         0.3f,  0.39f, -0.9f,  0.0f, 0.0f, //2
@@ -27,7 +27,7 @@ Voiture::Voiture(Shader* shader_program, Texture* texture_bleu, Texture* texture
         0.5f,  0.15f,  1.0f,  0.0f, 0.0f, //14
         0.5f,  0.39f, -0.8f,  0.0f, 0.0f, //15
 
-        //côté gauche
+        //cï¿½tï¿½ gauche
        -0.3f,  0.32f, -1.0f,  0.0f, 0.0f, //16
        -0.5f,  0.32f, -0.9f,  0.0f, 0.0f, //17
        -0.3f,  0.39f, -0.9f,  0.0f, 0.0f, //18

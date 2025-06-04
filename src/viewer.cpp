@@ -90,6 +90,12 @@ void Viewer::run()
                 if (e) e->update(delta_time);
             }
 
+        for (TrafficLight* feu : traffic_lights) {
+            if (feu) feu->update(delta_time);
+        }
+
+        
+
 
         //Gestion clavier (PERMET DE NAVIGUER SUR LA MAP : UTILE POUR DEBUG)
         /*

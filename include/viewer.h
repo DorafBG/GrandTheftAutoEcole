@@ -11,6 +11,7 @@
 #include "node.h"
 #include <vector>
 #include "eolienne.h"
+#include "traffic_light.h"
 
 class Viewer {
 public:
@@ -49,6 +50,7 @@ public:
     void on_mouse_move(double xpos, double ypos);
 
     std::vector<Eolienne*> eoliennes;
+    std::vector<TrafficLight*> traffic_lights;
 
 
 private:

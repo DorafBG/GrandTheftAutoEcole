@@ -14,7 +14,6 @@ public:
 
 private:
     glm::vec3 dynamic_color_;
-    GLuint VAO;
 };
 
 #endif // CUBE_TRAFFIC_LIGHT_H

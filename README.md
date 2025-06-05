@@ -126,7 +126,7 @@ However, we couldn't import them into the project because they had too many tria
 2. Open with your favorite IDE or compile from terminal
 3. Run the executable
 
-**[Download the .exe here](#)**
+**[Download the .exe here](https://github.com/DorafBG/GrandTheftAutoEcole/releases/tag/publish)**
 
 ---
 

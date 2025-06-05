@@ -88,7 +88,27 @@ This helps us apply transformations more easily (scale, rotation, translation).
 ### Blender Models
 
 We created several 3D models using **Blender**, like more detailed versions of buildings and objects.  
-However, we couldn't import them into the project because they had too many triangles for OpenGL in real-time.  
+However, we couldn't import them into the project because they had too many triangles for OpenGL in real-time.
+
+<h4>Gallery</h4>
+
+<p>
+  <img src="blender_models/castle1.png" width="30%">
+  <img src="blender_models/castle2.png" width="30%">
+</p>
+<p>
+  <img src="blender_models/castle3.png" width="30%">
+  <img src="blender_models/castle4.png" width="30%">
+</p>
+<p>
+  <img src="blender_models/church1.png" width="30%">
+  <img src="blender_models/church2.png" width="30%">
+</p>
+<p>
+  <img src="blender_models/church3.png" width="30%">
+  <img src="blender_models/church4.png" width="30%">
+</p>
+
 
 ---
 

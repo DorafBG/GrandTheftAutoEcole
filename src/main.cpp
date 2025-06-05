@@ -13,6 +13,7 @@
 #include "cagedefoot.h"
 #include "traffic_light.h"
 #include "cube_traffic_light.h"
+#include "panneau.h"
 #include "cubesimple.h"
 #include "banc.h"
 #include "arbre.h"
@@ -78,8 +79,8 @@ int main() {
     Texture* grass_texture = new Texture(texture_dir + "grass.jpg");
 
     Shape* ground2 = new Ground(ground_shader, grass_texture);
-    glm::mat4 ground_mat2 = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -0.01f, 0.0f)) *
-        glm::scale(glm::mat4(1.0f), glm::vec3(200.0f, 1.0f, 200.0f)); //50 fois plus large et profond (pas en hauteur)
+    glm::mat4 ground_mat2 = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -0.05f, 0.0f)) *
+        glm::scale(glm::mat4(1.0f), glm::vec3(300.0f, 1.0f, 300.0f)); //50 fois plus large et profond (pas en hauteur)
     Node* ground_node2 = new Node(ground_mat2);
     ground_node2->add(ground2);
     viewer.scene_root->add(ground_node2);
@@ -127,206 +128,209 @@ int main() {
 
     Shader* shader_maison = new Shader(shader_dir + "uniform_color.vert", shader_dir + "uniform_color.frag");
 
-    //maison1
-    Texture* mur_texture1 = new Texture(texture_dir + "mur_marron.png");
+   //maison1
+   Texture* mur_texture1 = new Texture(texture_dir + "mur_marron.png");
+   // Crée la maison : cube bleu, toit rouge par exemple
+   Maison* maison1 = new Maison(texture_shader, shader_maison, 
+       mur_texture1/*glm::vec3(0.2f, 0.2f, 1.0f)*/,
+       glm::vec3(0.5f, 0.1f, 0.1f), //couleur toit
+       1.7f, 2.3f, 0.5f, 0.5f, 1);  //longueur, largeur, hauteur_mur, hauteur_toit, choix du toit
+
+   // Positionne la maison (ex : à y = 1 pour qu’elle soit posée sur le sol)
+   glm::mat4 mat_maison1 = glm::translate(glm::mat4(1.0f), glm::vec3(-30, 1, 9.2)); // Translation = 2*hauteur_mur
+   mat_maison1 = glm::scale(mat_maison1, glm::vec3(4.0f, 4.0f, 4.0f));           // Puis scale
+
+   Node* node_maison1 = new Node(mat_maison1); node_maison1->add(maison1); viewer.scene_root->add(node_maison1);
+
+
+
+   //maison2
+   Texture* mur_texture2 = new Texture(texture_dir + "hlm.png");
+   // Crée la maison : cube bleu, toit rouge par exemple
+   Maison* maison2 = new Maison(texture_shader, shader_maison,
+       mur_texture2/*glm::vec3(0.2f, 0.2f, 1.0f)*/,
+       glm::vec3(0.0f, 0.0f, 0.0f), //couleur toit
+       2.5f, 3.0f, 6.0f, 0.0f, 0);  //longueur largeur hauteur_mur hauteur_toit
+
+   // Positionne la maison (ex : à y = 1 pour qu’elle soit posée sur le sol)
+   glm::mat4 mat_maison2 = glm::translate(glm::mat4(1.0f), glm::vec3(-12.5, 12, -16)); // Translation = 2*hauteur_mur
+   mat_maison2 = glm::scale(mat_maison2, glm::vec3(4.0f, 4.0f, 4.0f));           // Puis scale
+
+   Node* node_maison2 = new Node(mat_maison2); node_maison2->add(maison2); viewer.scene_root->add(node_maison2);
+
+
+
+   //maison4
+   Texture* mur_texture4 = new Texture(texture_dir + "lego.png");
+   Maison* maison4 = new Maison(texture_shader, shader_maison,
+       mur_texture4,
+       glm::vec3(0.2f, 0.2f, 0.2f),
+       1.7f, 2.0f, 1.5f, 1.0f, 3);  //longueur largeur hauteur_mur hauteur_toit
+
+   // Positionne la maison (ex : à y = 1 pour qu’elle soit posée sur le sol)
+   glm::mat4 mat_maison4 = glm::translate(glm::mat4(1.0f), glm::vec3(-42.5, 3, 8.8)); // Translation = 2*hauteur_mur
+   mat_maison4 = glm::scale(mat_maison4, glm::vec3(4.0f, 4.0f, 4.0f));           // Puis scale
+
+   Node* node_maison4 = new Node(mat_maison4); node_maison4->add(maison4); viewer.scene_root->add(node_maison4);
+
+
+   //maison5
+   Texture* mur_texture5 = new Texture(texture_dir + "newyork.png");
+   Maison* maison5 = new Maison(texture_shader, shader_maison,
+       mur_texture5,
+       glm::vec3(0.5f, 0.2f, 0.2f),
+       1.7f, 1.9f, 4.0f, 0.7f, 0);  //longueur largeur hauteur_mur hauteur_toit
+
+   glm::mat4 mat_maison5 = glm::translate(glm::mat4(1.0f), glm::vec3(9, 8, 1)); // Translation = 2*hauteur_mur
+   mat_maison5 = glm::scale(mat_maison5, glm::vec3(4.0f, 4.0f, 4.0f));           // Puis scale
+
+   Node* node_maison5 = new Node(mat_maison5); node_maison5->add(maison5); viewer.scene_root->add(node_maison5);
+
+
+   //maison6
+   Texture* mur_texture6 = new Texture(texture_dir + "newyork2.jpg");
+   Maison* maison6 = new Maison(texture_shader, shader_maison,
+       mur_texture6,
+       glm::vec3(0.5f, 0.2f, 0.2f),
+       1.3f, 1.8f, 3.5f, 0.7f, 0);  //longueur largeur hauteur_mur hauteur_toit
+
+   glm::mat4 mat_maison6 = glm::translate(glm::mat4(1.0f), glm::vec3(7.5, 7, -8.2)); // Translation = 2*hauteur_mur
+   mat_maison6 = glm::scale(mat_maison6, glm::vec3(4.0f, 4.0f, 4.0f));           // Puis scale
+
+   Node* node_maison6 = new Node(mat_maison6); node_maison6->add(maison6); viewer.scene_root->add(node_maison6);
+
+
+   //maison7
+   Texture* mur_texture7 = new Texture(texture_dir + "house.jpg");
+   Maison* maison7 = new Maison(texture_shader, shader_maison,
+       mur_texture7,
+       glm::vec3(0.4f, 0.3f, 0.2f),
+       1.3f, 2.0f, 0.7f, 0.8f, 1);  //longueur largeur hauteur_mur hauteur_toit
+
+   glm::mat4 mat_maison7 = glm::translate(glm::mat4(1.0f), glm::vec3(22.7, 1.4, 10.5)); // Translation = 2*hauteur_mur
+   mat_maison7 = glm::scale(mat_maison7, glm::vec3(4.0f, 4.0f, 4.0f));           // Puis scale
+
+   Node* node_maison7 = new Node(mat_maison7); node_maison7->add(maison7); viewer.scene_root->add(node_maison7);
+
+
+   //maison8
+   Texture* mur_texture8 = new Texture(texture_dir + "bluehouse.jpg");
+   Maison* maison8 = new Maison(texture_shader, shader_maison,
+       mur_texture8,
+       glm::vec3(0.1f, 0.1f, 0.3f),
+       1.3f, 1.8f, 1.0f, 0.7f, 3);  //longueur largeur hauteur_mur hauteur_toit
+
+   glm::mat4 mat_maison8 = glm::translate(glm::mat4(1.0f), glm::vec3(29.5, 2, 2)); // Translation = 2*hauteur_mur
+   mat_maison8 = glm::scale(mat_maison8, glm::vec3(4.0f, 4.0f, 4.0f));           // Puis scale
+
+   Node* node_maison8 = new Node(mat_maison8); node_maison8->add(maison8); viewer.scene_root->add(node_maison8);
+
+
+   //maison9
+   Texture* mur_texture9 = new Texture(texture_dir + "hlm.png");
+   Maison* maison9 = new Maison(texture_shader, shader_maison,
+       mur_texture9,
+       glm::vec3(1.0f, 0.2f, 0.2f),
+       1.3f, 1.8f, 3.1f, 0.7f, 0);  //longueur largeur hauteur_mur hauteur_toit
+
+   glm::mat4 mat_maison9 = glm::translate(glm::mat4(1.0f), glm::vec3(41, 6.2, 1)); // Translation = 2*hauteur_mur
+   mat_maison9 = glm::scale(mat_maison9, glm::vec3(4.0f, 4.0f, 4.0f));           // Puis scale
+
+   Node* node_maison9 = new Node(mat_maison9); node_maison9->add(maison9); viewer.scene_root->add(node_maison9);
+
+
+   //maison10
+   Texture* mur_texture10 = new Texture(texture_dir + "yellowhouse.jpg");
+   Maison* maison10 = new Maison(texture_shader, shader_maison,
+       mur_texture10,
+       glm::vec3(0.3f, 0.2f, 0.1f),
+       1.2f, 1.9f, 2.2f, 0.2f, 1);  //longueur largeur hauteur_mur hauteur_toit
+
+   glm::mat4 mat_maison10 = glm::translate(glm::mat4(1.0f), glm::vec3(47, 4.4, -42)); // Translation = 2*hauteur_mur
+   mat_maison10 = glm::scale(mat_maison10, glm::vec3(4.0f, 4.0f, 4.0f));           // Puis scale
+
+   Node* node_maison10 = new Node(mat_maison10); node_maison10->add(maison10); viewer.scene_root->add(node_maison10);
+
+
+   //maison11
+   Texture* mur_texture11 = new Texture(texture_dir + "yellowhouse.jpg");
+   Maison* maison11 = new Maison(texture_shader, shader_maison,
+       mur_texture11,
+       glm::vec3(0.2f, 0.1f, 0.1f),
+       1.2f, 1.9f, 2.3, 0.3f, 1);  //longueur largeur hauteur_mur hauteur_toit
+
+   glm::mat4 mat_maison11 = glm::translate(glm::mat4(1.0f), glm::vec3(41, 4.6, 19)); // Translation = 2*hauteur_mur
+   mat_maison11 = glm::scale(mat_maison11, glm::vec3(4.0f, 4.0f, 4.0f));           // Puis scale
+
+   Node* node_maison11 = new Node(mat_maison11); node_maison11->add(maison11); viewer.scene_root->add(node_maison11);
+
+
+   //maison12
+   Texture* mur_texture12 = new Texture(texture_dir + "house.jpg");
+   Maison* maison12 = new Maison(texture_shader, shader_maison,
+       mur_texture12,
+       glm::vec3(0.0f, 0.1f, 0.1f),
+       1.5f, 1.5f, 1.8f, 0.7f, 1);  //longueur largeur hauteur_mur hauteur_toit
+
+   glm::mat4 mat_maison12 = glm::translate(glm::mat4(1.0f), glm::vec3(5, 3.6, -34.5)); // Translation = 2*hauteur_mur
+   mat_maison12 = glm::scale(mat_maison12, glm::vec3(4.0f, 4.0f, 4.0f));           // Puis scale
+
+   Node* node_maison12 = new Node(mat_maison12); node_maison12->add(maison12); viewer.scene_root->add(node_maison12);
+
+
+   //maison13
+   Texture* mur_texture13 = new Texture(texture_dir + "house.jpg");
+   Maison* maison13 = new Maison(texture_shader, shader_maison,
+       mur_texture13,
+       glm::vec3(0.0f, 0.1f, 0.1f),
+       0.6f, 0.7f, 0.7f, 0.3f, 1);  //longueur largeur hauteur_mur hauteur_toit
+
+   glm::mat4 mat_maison13 = glm::translate(glm::mat4(1.0f), glm::vec3(10.5, 1.4, -34.5)); // Translation = 2*hauteur_mur
+   mat_maison13 = glm::scale(mat_maison13, glm::vec3(4.0f, 4.0f, 4.0f));           // Puis scale
+
+   Node* node_maison13 = new Node(mat_maison13); node_maison13->add(maison13); viewer.scene_root->add(node_maison13);
+
+
+   //maison14
+   Texture* mur_texture14 = new Texture(texture_dir + "manoir.png");
+   Maison* maison14 = new Maison(texture_shader, shader_maison,
+       mur_texture14,
+       glm::vec3(0.4f, 0.3f, 0.3f),
+       3.5f, 2.0f, 2.0f, 0.7f, 3);  //longueur largeur hauteur_mur hauteur_toit
+
+   glm::mat4 mat_maison14 = glm::translate(glm::mat4(1.0f), glm::vec3(13, 4, 42.5)); // Translation = 2*hauteur_mur
+   mat_maison14 = glm::scale(mat_maison14, glm::vec3(4.0f, 4.0f, 4.0f));           // Puis scale
+
+   Node* node_maison14 = new Node(mat_maison14); node_maison14->add(maison14); viewer.scene_root->add(node_maison14);
+
+
+   //maison15
+   Texture* mur_texture15 = new Texture(texture_dir + "brick.jpg");
+   Maison* maison15 = new Maison(texture_shader, shader_maison,
+       mur_texture15,
+       glm::vec3(0.3f, 0.3f, 0.3f),
+       1.2f, 1.4f, 1.0f, 2.5f, 1);  //longueur largeur hauteur_mur hauteur_toit
+
+   glm::mat4 mat_maison15 = glm::translate(glm::mat4(1.0f), glm::vec3(2, 2, 25)); // Translation = 2*hauteur_mur
+   mat_maison15 = glm::scale(mat_maison15, glm::vec3(4.0f, 4.0f, 4.0f));           // Puis scale
+
+   Node* node_maison15 = new Node(mat_maison15); node_maison15->add(maison15); viewer.scene_root->add(node_maison15);
+
+
+   //maison16
+   Texture* mur_texture16 = new Texture(texture_dir + "manoir.png");
+   Maison* maison16 = new Maison(texture_shader, shader_maison,
+       mur_texture16,
+       glm::vec3(0.6f, 0.6f, 0.5f),
+       4.7f, 4.7f, 2.7f, 0.8f, 3);  //longueur largeur hauteur_mur hauteur_toit
+
+   glm::mat4 mat_maison16 = glm::translate(glm::mat4(1.0f), glm::vec3(-22.5, 5.2, -44)); // Translation = 2*hauteur_mur
+   mat_maison16 = glm::scale(mat_maison16, glm::vec3(4.0f, 4.0f, 4.0f));           // Puis scale
+
+   Node* node_maison16 = new Node(mat_maison16); node_maison16->add(maison16); viewer.scene_root->add(node_maison16);
+
    
-    Maison* maison1 = new Maison(texture_shader, shader_maison, 
-        mur_texture1/*glm::vec3(0.2f, 0.2f, 1.0f)*/,
-        glm::vec3(0.5f, 0.1f, 0.1f), //couleur toit
-        1.7f, 2.3f, 0.5f, 0.5f, 1);  //longueur, largeur, hauteur_mur, hauteur_toit, choix du toit
 
-  
-    glm::mat4 mat_maison1 = glm::translate(glm::mat4(1.0f), glm::vec3(-30, 1, 9.2)); // Translation = 2*hauteur_mur
-    mat_maison1 = glm::scale(mat_maison1, glm::vec3(4.0f, 4.0f, 4.0f));           // Puis scale
-
-    Node* node_maison1 = new Node(mat_maison1); node_maison1->add(maison1); viewer.scene_root->add(node_maison1);
-
-
-
-    //maison2
-    Texture* mur_texture2 = new Texture(texture_dir + "hlm.png");
-
-    Maison* maison2 = new Maison(texture_shader, shader_maison,
-        mur_texture2/*glm::vec3(0.2f, 0.2f, 1.0f)*/,
-        glm::vec3(0.0f, 0.0f, 0.0f), //couleur toit
-        2.5f, 3.0f, 6.0f, 0.0f, 0);  //longueur largeur hauteur_mur hauteur_toit
-
-
-    glm::mat4 mat_maison2 = glm::translate(glm::mat4(1.0f), glm::vec3(-12.5, 12, -16)); // Translation = 2*hauteur_mur
-    mat_maison2 = glm::scale(mat_maison2, glm::vec3(4.0f, 4.0f, 4.0f));           // Puis scale
-
-    Node* node_maison2 = new Node(mat_maison2); node_maison2->add(maison2); viewer.scene_root->add(node_maison2);
-
-
-
-    //maison4
-    Texture* mur_texture4 = new Texture(texture_dir + "lego.png");
-    Maison* maison4 = new Maison(texture_shader, shader_maison,
-        mur_texture4,
-        glm::vec3(0.2f, 0.2f, 0.2f),
-        1.7f, 2.0f, 1.5f, 1.0f, 1);  //longueur largeur hauteur_mur hauteur_toit
-
-   
-    glm::mat4 mat_maison4 = glm::translate(glm::mat4(1.0f), glm::vec3(-42.5, 3, 8.8)); // Translation = 2*hauteur_mur
-    mat_maison4 = glm::scale(mat_maison4, glm::vec3(4.0f, 4.0f, 4.0f));           // Puis scale
-
-    Node* node_maison4 = new Node(mat_maison4); node_maison4->add(maison4); viewer.scene_root->add(node_maison4);
-
-
-    //maison5
-    Texture* mur_texture5 = new Texture(texture_dir + "newyork.png");
-    Maison* maison5 = new Maison(texture_shader, shader_maison,
-        mur_texture5,
-        glm::vec3(0.5f, 0.2f, 0.2f),
-        1.7f, 1.9f, 4.0f, 0.7f, 0);  //longueur largeur hauteur_mur hauteur_toit
-
-    glm::mat4 mat_maison5 = glm::translate(glm::mat4(1.0f), glm::vec3(9, 8, 1)); // Translation = 2*hauteur_mur
-    mat_maison5 = glm::scale(mat_maison5, glm::vec3(4.0f, 4.0f, 4.0f));           // Puis scale
-
-    Node* node_maison5 = new Node(mat_maison5); node_maison5->add(maison5); viewer.scene_root->add(node_maison5);
-
-
-    //maison6
-    Texture* mur_texture6 = new Texture(texture_dir + "newyork2.jpg");
-    Maison* maison6 = new Maison(texture_shader, shader_maison,
-        mur_texture6,
-        glm::vec3(0.5f, 0.2f, 0.2f),
-        1.3f, 1.8f, 3.5f, 0.7f, 0);  //longueur largeur hauteur_mur hauteur_toit
-
-    glm::mat4 mat_maison6 = glm::translate(glm::mat4(1.0f), glm::vec3(7.5, 7, -8.2)); // Translation = 2*hauteur_mur
-    mat_maison6 = glm::scale(mat_maison6, glm::vec3(4.0f, 4.0f, 4.0f));           // Puis scale
-
-    Node* node_maison6 = new Node(mat_maison6); node_maison6->add(maison6); viewer.scene_root->add(node_maison6);
-
-
-    //maison7
-    Texture* mur_texture7 = new Texture(texture_dir + "house.jpg");
-    Maison* maison7 = new Maison(texture_shader, shader_maison,
-        mur_texture7,
-        glm::vec3(0.4f, 0.3f, 0.2f),
-        1.3f, 2.0f, 0.7f, 0.8f, 1);  //longueur largeur hauteur_mur hauteur_toit
-
-    glm::mat4 mat_maison7 = glm::translate(glm::mat4(1.0f), glm::vec3(22.7, 1.4, 10.5)); // Translation = 2*hauteur_mur
-    mat_maison7 = glm::scale(mat_maison7, glm::vec3(4.0f, 4.0f, 4.0f));           // Puis scale
-
-    Node* node_maison7 = new Node(mat_maison7); node_maison7->add(maison7); viewer.scene_root->add(node_maison7);
-
-
-    //maison8
-    Texture* mur_texture8 = new Texture(texture_dir + "bluehouse.jpg");
-    Maison* maison8 = new Maison(texture_shader, shader_maison,
-        mur_texture8,
-        glm::vec3(0.1f, 0.1f, 0.3f),
-        1.3f, 1.8f, 1.0f, 0.7f, 1);  //longueur largeur hauteur_mur hauteur_toit
-
-    glm::mat4 mat_maison8 = glm::translate(glm::mat4(1.0f), glm::vec3(29.5, 2, 2)); // Translation = 2*hauteur_mur
-    mat_maison8 = glm::scale(mat_maison8, glm::vec3(4.0f, 4.0f, 4.0f));           // Puis scale
-
-    Node* node_maison8 = new Node(mat_maison8); node_maison8->add(maison8); viewer.scene_root->add(node_maison8);
-
-
-    //maison9
-    Texture* mur_texture9 = new Texture(texture_dir + "hlm.png");
-    Maison* maison9 = new Maison(texture_shader, shader_maison,
-        mur_texture9,
-        glm::vec3(1.0f, 0.2f, 0.2f),
-        1.3f, 1.8f, 3.1f, 0.7f, 0);  //longueur largeur hauteur_mur hauteur_toit
-
-    glm::mat4 mat_maison9 = glm::translate(glm::mat4(1.0f), glm::vec3(41, 6.2, 1)); // Translation = 2*hauteur_mur
-    mat_maison9 = glm::scale(mat_maison9, glm::vec3(4.0f, 4.0f, 4.0f));           // Puis scale
-
-    Node* node_maison9 = new Node(mat_maison9); node_maison9->add(maison9); viewer.scene_root->add(node_maison9);
-
-
-    //maison10
-    Texture* mur_texture10 = new Texture(texture_dir + "yellowhouse.jpg");
-    Maison* maison10 = new Maison(texture_shader, shader_maison,
-        mur_texture10,
-        glm::vec3(0.3f, 0.2f, 0.1f),
-        1.2f, 1.9f, 2.2f, 0.2f, 1);  //longueur largeur hauteur_mur hauteur_toit
-
-    glm::mat4 mat_maison10 = glm::translate(glm::mat4(1.0f), glm::vec3(47, 4.4, -42)); // Translation = 2*hauteur_mur
-    mat_maison10 = glm::scale(mat_maison10, glm::vec3(4.0f, 4.0f, 4.0f));           // Puis scale
-
-    Node* node_maison10 = new Node(mat_maison10); node_maison10->add(maison10); viewer.scene_root->add(node_maison10);
-
-
-    //maison11
-    Texture* mur_texture11 = new Texture(texture_dir + "yellowhouse.jpg");
-    Maison* maison11 = new Maison(texture_shader, shader_maison,
-        mur_texture11,
-        glm::vec3(0.2f, 0.1f, 0.1f),
-        1.2f, 1.9f, 2.3, 0.3f, 1);  //longueur largeur hauteur_mur hauteur_toit
-
-    glm::mat4 mat_maison11 = glm::translate(glm::mat4(1.0f), glm::vec3(41, 4.6, 19)); // Translation = 2*hauteur_mur
-    mat_maison11 = glm::scale(mat_maison11, glm::vec3(4.0f, 4.0f, 4.0f));           // Puis scale
-
-    Node* node_maison11 = new Node(mat_maison11); node_maison11->add(maison11); viewer.scene_root->add(node_maison11);
-
-
-    //maison12
-    Texture* mur_texture12 = new Texture(texture_dir + "house.jpg");
-    Maison* maison12 = new Maison(texture_shader, shader_maison,
-        mur_texture12,
-        glm::vec3(0.0f, 0.1f, 0.1f),
-        1.5f, 1.5f, 1.8f, 0.7f, 1);  //longueur largeur hauteur_mur hauteur_toit
-
-    glm::mat4 mat_maison12 = glm::translate(glm::mat4(1.0f), glm::vec3(5, 3.6, -34.5)); // Translation = 2*hauteur_mur
-    mat_maison12 = glm::scale(mat_maison12, glm::vec3(4.0f, 4.0f, 4.0f));           // Puis scale
-
-    Node* node_maison12 = new Node(mat_maison12); node_maison12->add(maison12); viewer.scene_root->add(node_maison12);
-
-
-    //maison13
-    Texture* mur_texture13 = new Texture(texture_dir + "house.jpg");
-    Maison* maison13 = new Maison(texture_shader, shader_maison,
-        mur_texture13,
-        glm::vec3(0.0f, 0.2f, 0.5f),
-        0.6f, 0.7f, 0.7f, 0.3f, 1);  //longueur largeur hauteur_mur hauteur_toit
-
-    glm::mat4 mat_maison13 = glm::translate(glm::mat4(1.0f), glm::vec3(10.5, 1.4, -34.5)); // Translation = 2*hauteur_mur
-    mat_maison13 = glm::scale(mat_maison13, glm::vec3(4.0f, 4.0f, 4.0f));           // Puis scale
-
-    Node* node_maison13 = new Node(mat_maison13); node_maison13->add(maison13); viewer.scene_root->add(node_maison13);
-
-
-    //maison14
-    Texture* mur_texture14 = new Texture(texture_dir + "manoir.png");
-    Maison* maison14 = new Maison(texture_shader, shader_maison,
-        mur_texture14,
-        glm::vec3(0.4f, 0.3f, 0.3f),
-        3.5f, 2.0f, 2.0f, 0.7f, 1);  //longueur largeur hauteur_mur hauteur_toit
-
-    glm::mat4 mat_maison14 = glm::translate(glm::mat4(1.0f), glm::vec3(13, 4, 42.5)); // Translation = 2*hauteur_mur
-    mat_maison14 = glm::scale(mat_maison14, glm::vec3(4.0f, 4.0f, 4.0f));           // Puis scale
-
-    Node* node_maison14 = new Node(mat_maison14); node_maison14->add(maison14); viewer.scene_root->add(node_maison14);
-
-
-    //maison15
-    Texture* mur_texture15 = new Texture(texture_dir + "brick.jpg");
-    Maison* maison15 = new Maison(texture_shader, shader_maison,
-        mur_texture15,
-        glm::vec3(0.3f, 0.3f, 0.3f),
-        1.2f, 1.4f, 1.0f, 2.5f, 1);  //longueur largeur hauteur_mur hauteur_toit
-
-    glm::mat4 mat_maison15 = glm::translate(glm::mat4(1.0f), glm::vec3(2, 2, 25)); // Translation = 2*hauteur_mur
-    mat_maison15 = glm::scale(mat_maison15, glm::vec3(4.0f, 4.0f, 4.0f));           // Puis scale
-
-    Node* node_maison15 = new Node(mat_maison15); node_maison15->add(maison15); viewer.scene_root->add(node_maison15);
-
-
-    //maison16
-    Texture* mur_texture16 = new Texture(texture_dir + "manoir.png");
-    Maison* maison16 = new Maison(texture_shader, shader_maison,
-        mur_texture16,
-        glm::vec3(0.3f, 0.3f, 0.4f),
-        4.7f, 2.2f, 2.7f, 0.8f, 1);  //longueur largeur hauteur_mur hauteur_toit
-
-    glm::mat4 mat_maison16 = glm::translate(glm::mat4(1.0f), glm::vec3(-22.5, 5.2, -44)); // Translation = 2*hauteur_mur
-    mat_maison16 = glm::scale(mat_maison16, glm::vec3(4.0f, 4.0f, 4.0f));           // Puis scale
-
-    Node* node_maison16 = new Node(mat_maison16); node_maison16->add(maison16); viewer.scene_root->add(node_maison16);
 
     
 
@@ -692,6 +696,27 @@ int main() {
 
         viewer.eoliennes.push_back(eolienne);
     }
+
+    Texture* texture_panneau = new Texture(texture_dir + "stop2.png");  
+
+    Panneau* panneau = new Panneau(color_shader, glm::vec3(0.3f, 0.3f, 0.3f), color_shader, texture_panneau);
+
+    glm::mat4 mat_panneau = glm::translate(glm::mat4(1.0f), glm::vec3(20, 0, -40));
+    mat_panneau = glm::scale(mat_panneau, glm::vec3(1.1f, 1.1f , 1.1f)); 
+    Node* node_panneau = new Node(mat_panneau);
+    node_panneau->add(panneau);
+    viewer.scene_root->add(node_panneau);
+
+    Texture* texture_panneau2 = new Texture(texture_dir + "panneau_voiture.png"); 
+
+    Panneau* panneau2 = new Panneau(color_shader, glm::vec3(0.3f, 0.3f, 0.3f), color_shader, texture_panneau);
+
+    glm::mat4 mat_panneau2 = glm::translate(glm::mat4(1.0f), glm::vec3(25, 0, -40));
+    mat_panneau2 = glm::scale(mat_panneau2, glm::vec3(1.1f, 1.1f , 1.1f)); 
+    Node* node_panneau2 = new Node(mat_panneau2);
+    node_panneau2->add(panneau2);
+    viewer.scene_root->add(node_panneau2);
+
 
 
 

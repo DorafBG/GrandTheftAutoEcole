@@ -203,10 +203,10 @@ void Viewer::run()
         // LOGS VOITURE
         glm::mat4 voiture_transform = voiture_node->getTransform();
         glm::vec3 voiture_pos(voiture_transform[3][0], voiture_transform[3][1], voiture_transform[3][2]);
-        /*std::cout << "Voiture position: ("
+        std::cout << "Voiture position: ("
             << voiture_pos.x << ", "
             << voiture_pos.y << ", "
-            << voiture_pos.z << ")\n";*/
+            << voiture_pos.z << ")\n";
 
         // LOGS CAMERA
         /*
@@ -220,7 +220,12 @@ void Viewer::run()
             << camera_front.y << ", "
             << camera_front.z << ")\n"; */
 
-
+        if (glfwGetKey(win, GLFW_KEY_1) == GLFW_PRESS) { camera_distance = 10.0f; }
+        if (glfwGetKey(win, GLFW_KEY_2) == GLFW_PRESS) { camera_distance = 13.0f; }
+        if (glfwGetKey(win, GLFW_KEY_3) == GLFW_PRESS) { camera_distance = 20.0f; }
+        if (glfwGetKey(win, GLFW_KEY_4) == GLFW_PRESS) { camera_distance = 30.0f; }
+        if (glfwGetKey(win, GLFW_KEY_5) == GLFW_PRESS) { camera_distance = 50.0f; }
+        if (glfwGetKey(win, GLFW_KEY_P) == GLFW_PRESS) { camera_distance = 200.0f;}
 
         float camera_x = voiture_pos.x + camera_distance * cos(glm::radians(camera_yaw)) * cos(glm::radians(camera_pitch));
         float camera_y = voiture_pos.y + camera_height_offset + camera_distance * sin(glm::radians(camera_pitch));
@@ -299,11 +304,15 @@ void Viewer::on_mouse_move(double xpos, double ypos)
     camera_yaw += xoffset;
     camera_pitch += yoffset;
 
-    // Limiter l'angle vertical pour eviter les retournements
-    if (camera_pitch > 45.0f)
+    if (camera_pitch > 45.0 && camera_distance < 30.0) {
         camera_pitch = 45.0f;
-    if (camera_pitch < -3.0f)   
-        camera_pitch = -3.0f;
+    }
+    if (camera_pitch > 89.0) {
+        camera_pitch = 89.0;
+    }
+    if (camera_pitch < -3.4f) {
+        camera_pitch = -3.4f;
+    }
 }
 
 

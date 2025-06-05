@@ -33,6 +33,7 @@ set(SOURCES
     ${SRC_DIR}/cylinder.cpp
     ${SRC_DIR}/sphere.cpp
     ${SRC_DIR}/texture.cpp
+    ${SRC_DIR}/panneau.cpp
     ${SRC_DIR}/traffic_light.cpp
     ${SRC_DIR}/cube_traffic_light.cpp
     ${SRC_DIR}/cagedefoot.cpp

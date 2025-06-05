@@ -69,7 +69,7 @@ int main() {
 
     Shape* ground = new Ground(ground_shader, carpet_texture);
     glm::mat4 ground_mat = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f)) *
-        glm::scale(glm::mat4(1.0f), glm::vec3(50.0f, 1.0f, 50.0f)); //50 fois plus large et profond (pas en hauteur)
+        glm::scale(glm::mat4(1.0f), glm::vec3(50.0f, 1.0f, 50.0f)); 
     Node* ground_node = new Node(ground_mat);
     ground_node->add(ground);
     viewer.scene_root->add(ground_node);
@@ -94,7 +94,7 @@ int main() {
     Texture* rouge_texture = new Texture(texture_dir + "95.png");
     Texture* noir_texture = new Texture(texture_dir + "noir.jpg");
     Voiture* voiture = new Voiture(texture_shader, rouge_texture, noir_texture);
-
+ //50 fois plus large et profond (pas en hauteur)w
 
     float largeur_voiture = 1.5f, epaisseur_voiture = 2.0f, longueur_voiture = 2.0f;
     glm::vec3 decalage_vertical = glm::vec3(0, 0.01f, 0);
@@ -338,10 +338,19 @@ int main() {
     Shader* shader_blanc = new Shader(shader_dir + "uniform_color.vert", shader_dir + "uniform_color.frag");
    
 
-    // Cage de foot
-    CageDeFoot* cage = new CageDeFoot(shader_blanc, glm::vec3(1.0f));
-    glm::mat4 mat_cage = glm::translate(glm::mat4(1.0f), glm::vec3(10, 0, 0)) * glm::scale(glm::mat4(1.0f), glm::vec3(2.0f));
-    Node* node_cage = new Node(mat_cage); node_cage->add(cage); viewer.scene_root->add(node_cage);
+    // Première cage de foot
+    CageDeFoot* cage1 = new CageDeFoot(shader_blanc, glm::vec3(1.0f));
+    glm::mat4 mat_cage1 = glm::translate(glm::mat4(1.0f), glm::vec3(-33.6549f, 0.0f, -0.0345873f)) * glm::scale(glm::mat4(1.0f), glm::vec3(2.0f));
+    Node* node_cage1 = new Node(mat_cage1);
+    node_cage1->add(cage1);
+    viewer.scene_root->add(node_cage1);
+
+    // Deuxième cage de foot
+    CageDeFoot* cage2 = new CageDeFoot(shader_blanc, glm::vec3(1.0f));
+    glm::mat4 mat_cage2 = glm::translate(glm::mat4(1.0f), glm::vec3(-34.7598f, 0.0f, -18.6959f)) * glm::scale(glm::mat4(1.0f), glm::vec3(2.0f));
+    Node* node_cage2 = new Node(mat_cage2);
+    node_cage2->add(cage2);
+    viewer.scene_root->add(node_cage2);
 
     // Feu de circulation
     Shader* color_shader = new Shader(shader_dir + "uniform_color.vert", shader_dir + "uniform_color.frag");
@@ -352,10 +361,28 @@ int main() {
     viewer.scene_root->add(node_traffic_light);
     viewer.traffic_lights.push_back(traffic_light);
 
+std::vector<glm::vec3> traffic_light_positions = {
+    glm::vec3(-18.4f, 0.0f, -0.26f),
+    glm::vec3(7.3f, 0.0f, 7.7f),
+    glm::vec3(45.0f, 0.0f, 38.0f),
+    glm::vec3(44.4f, 0.0f, -23.97f),
+    glm::vec3(-15.15f, 0.0f, -29.2f),
+};
+
+for(const auto& pos : traffic_light_positions) {
+    TrafficLight* traffic_light = new TrafficLight(color_shader);
+    glm::mat4 mat_traffic_light = glm::translate(glm::mat4(1.0f), pos);
+    Node* node_traffic_light = new Node(mat_traffic_light);
+    node_traffic_light->add(traffic_light);
+    viewer.scene_root->add(node_traffic_light);
+    viewer.traffic_lights.push_back(traffic_light);
+}
+
+
 
 
     //Soleil
-    glm::vec3 soleil_pos(60, 15, 15);
+    glm::vec3 soleil_pos(60, 40, 15);
     glm::vec3 soleil_couleur(1.0f, 1.0f, 0.8f);
     glm::vec3 sphere_jaune(1.0f, 1.0f, 0.2f);
 
@@ -380,6 +407,38 @@ int main() {
     node_banc ->add(banc);
     viewer.scene_root->add(node_banc);
 
+    Banc* banc1 = new Banc(shader_blanc, glm::vec3(1.0f));
+    glm::mat4 mat_banc1 = glm::translate(glm::mat4(1.0f), glm::vec3(30.6f, -0.35f, 17.77f)) * glm::scale(glm::mat4(1.0f), glm::vec3(1.25f));
+    Node* node_banc1 = new Node(mat_banc1);
+    node_banc1->add(banc1);
+    viewer.scene_root->add(node_banc1);
+
+    Banc* banc2 = new Banc(shader_blanc, glm::vec3(1.0f));
+    glm::mat4 mat_banc2 = glm::translate(glm::mat4(1.0f), glm::vec3(10.59f, -0.35f, 2.95f)) * glm::scale(glm::mat4(1.0f), glm::vec3(1.25f));
+    Node* node_banc2 = new Node(mat_banc2);
+    node_banc2->add(banc2);
+    viewer.scene_root->add(node_banc2);
+
+    Banc* banc3 = new Banc(shader_blanc, glm::vec3(1.0f));
+    glm::mat4 mat_banc3 = glm::translate(glm::mat4(1.0f), glm::vec3(21.951f, -0.35f, 4.4f)) * glm::scale(glm::mat4(1.0f), glm::vec3(1.25f));
+    Node* node_banc3 = new Node(mat_banc3);
+    node_banc3->add(banc3);
+    viewer.scene_root->add(node_banc3);
+
+    Banc* banc4 = new Banc(shader_blanc, glm::vec3(1.0f));
+    glm::mat4 mat_banc4 = glm::translate(glm::mat4(1.0f), glm::vec3(41.717f, -0.35f, 12.869f)) * glm::scale(glm::mat4(1.0f), glm::vec3(1.25f));
+    Node* node_banc4 = new Node(mat_banc4);
+    node_banc4->add(banc4);
+    viewer.scene_root->add(node_banc4);
+
+    Banc* banc5 = new Banc(shader_blanc, glm::vec3(1.0f));
+    glm::mat4 mat_banc5 = glm::translate(glm::mat4(1.0f), glm::vec3(-39.57f, -0.35f, -29.14f)) * glm::scale(glm::mat4(1.0f), glm::vec3(1.25f));
+    Node* node_banc5 = new Node(mat_banc5);
+    node_banc5->add(banc5);
+    viewer.scene_root->add(node_banc5);
+
+
+/*
     Arbre* arbre = new Arbre(uniform_shader);
     glm::mat4 mat_arbre = glm::translate(glm::mat4(1.0f), glm::vec3(20,0,0))  * glm::scale(glm::mat4(1.0f), glm::vec3(2.0f));
     Node* node_arbre = new Node(mat_arbre);
@@ -393,7 +452,7 @@ int main() {
     Node* node_arbre2 = new Node(mat_arbre2);
     node_arbre2 ->add(arbre2);
     viewer.scene_root->add(node_arbre2);
-
+*/
 
     // Création des arbres et de leur node parent
     for (int i = 0; i < 30; ++i) {
@@ -699,23 +758,128 @@ int main() {
 
     Texture* texture_panneau = new Texture(texture_dir + "stop2.png");  
 
-    Panneau* panneau = new Panneau(color_shader, glm::vec3(0.3f, 0.3f, 0.3f), color_shader, texture_panneau);
+    // Premier panneau STOP
+    Panneau* panneau1 = new Panneau(uniform_shader, glm::vec3(0.7f, 0.7f, 0.7f), uniform_shader);
+    glm::mat4 mat_panneau1 = glm::translate(glm::mat4(1.0f), glm::vec3(-37.19f, 0.0f, 20.2f));
+    Node* node_panneau1 = new Node(mat_panneau1);
+    node_panneau1->add(panneau1);
+    viewer.scene_root->add(node_panneau1);
 
-    glm::mat4 mat_panneau = glm::translate(glm::mat4(1.0f), glm::vec3(20, 0, -40));
-    mat_panneau = glm::scale(mat_panneau, glm::vec3(1.1f, 1.1f , 1.1f)); 
-    Node* node_panneau = new Node(mat_panneau);
-    node_panneau->add(panneau);
-    viewer.scene_root->add(node_panneau);
-
-    Texture* texture_panneau2 = new Texture(texture_dir + "panneau_voiture.png"); 
-
-    Panneau* panneau2 = new Panneau(color_shader, glm::vec3(0.3f, 0.3f, 0.3f), color_shader, texture_panneau);
-
-    glm::mat4 mat_panneau2 = glm::translate(glm::mat4(1.0f), glm::vec3(25, 0, -40));
-    mat_panneau2 = glm::scale(mat_panneau2, glm::vec3(1.1f, 1.1f , 1.1f)); 
+    // Deuxième panneau STOP
+    Panneau* panneau2 = new Panneau(uniform_shader, glm::vec3(0.7f, 0.7f, 0.7f), uniform_shader);
+    glm::mat4 mat_panneau2 = glm::translate(glm::mat4(1.0f), glm::vec3(-17.76f, 0.0f, -7.89f));
     Node* node_panneau2 = new Node(mat_panneau2);
     node_panneau2->add(panneau2);
     viewer.scene_root->add(node_panneau2);
+
+    // Troisième panneau STOP
+    Panneau* panneau3 = new Panneau(uniform_shader, glm::vec3(0.7f, 0.7f, 0.7f), uniform_shader);
+    glm::mat4 mat_panneau3 = glm::translate(glm::mat4(1.0f), glm::vec3(26.67f, 0.0f, 25.16f));
+    Node* node_panneau3 = new Node(mat_panneau3);
+    node_panneau3->add(panneau3);
+    viewer.scene_root->add(node_panneau3);
+
+
+    // Fonction utilitaire pour générer un float entre min et max
+    auto random_float = [](float min, float max) {
+        return min + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX/(max-min)));
+    };
+
+    // Arbre 1
+    Arbre* arbre1 = new Arbre(uniform_shader);
+    float taille1 = random_float(1.5f, 2.5f);
+    glm::mat4 mat_arbre1 = glm::translate(glm::mat4(1.0f), glm::vec3(-45.8f, 0.0f, 42.34f)) * glm::scale(glm::mat4(1.0f), glm::vec3(taille1));
+    Node* node_arbre1 = new Node(mat_arbre1);
+    node_arbre1->add(arbre1);
+    viewer.scene_root->add(node_arbre1);
+
+    // Arbre 2
+    Arbre* arbre2 = new Arbre(uniform_shader);
+    float taille2 = random_float(1.5f, 2.5f);
+    glm::mat4 mat_arbre2 = glm::translate(glm::mat4(1.0f), glm::vec3(-34.7f, 0.0f, 36.8f)) * glm::scale(glm::mat4(1.0f), glm::vec3(taille2));
+    Node* node_arbre2 = new Node(mat_arbre2);
+    node_arbre2->add(arbre2);
+    viewer.scene_root->add(node_arbre2);
+
+    // Arbre 3
+    Arbre* arbre3 = new Arbre(uniform_shader);
+    float taille3 = random_float(1.5f, 2.5f);
+    glm::mat4 mat_arbre3 = glm::translate(glm::mat4(1.0f), glm::vec3(-32.43f, 0.0f, 22.918f)) * glm::scale(glm::mat4(1.0f), glm::vec3(taille3));
+    Node* node_arbre3 = new Node(mat_arbre3);
+    node_arbre3->add(arbre3);
+    viewer.scene_root->add(node_arbre3);
+
+    // Arbre 4
+    Arbre* arbre4 = new Arbre(uniform_shader);
+    float taille4 = random_float(1.5f, 2.5f);
+    glm::mat4 mat_arbre4 = glm::translate(glm::mat4(1.0f), glm::vec3(-22.0f, 0.0f, 21.9f)) * glm::scale(glm::mat4(1.0f), glm::vec3(taille4));
+    Node* node_arbre4 = new Node(mat_arbre4);
+    node_arbre4->add(arbre4);
+    viewer.scene_root->add(node_arbre4);
+
+    // Arbre 5
+    Arbre* arbre5 = new Arbre(uniform_shader);
+    float taille5 = random_float(1.5f, 2.5f);
+    glm::mat4 mat_arbre5 = glm::translate(glm::mat4(1.0f), glm::vec3(-35.5f, 0.0f, 12.3f)) * glm::scale(glm::mat4(1.0f), glm::vec3(taille5));
+    Node* node_arbre5 = new Node(mat_arbre5);
+    node_arbre5->add(arbre5);
+    viewer.scene_root->add(node_arbre5);
+
+    // Arbre 6
+    Arbre* arbre6 = new Arbre(uniform_shader);
+    float taille6 = random_float(1.5f, 2.5f);
+    glm::mat4 mat_arbre6 = glm::translate(glm::mat4(1.0f), glm::vec3(-18.7f, 0.0f, 3.0f)) * glm::scale(glm::mat4(1.0f), glm::vec3(taille6));
+    Node* node_arbre6 = new Node(mat_arbre6);
+    node_arbre6->add(arbre6);
+    viewer.scene_root->add(node_arbre6);
+
+    // Arbre 7
+    Arbre* arbre7 = new Arbre(uniform_shader);
+    float taille7 = random_float(1.5f, 2.5f);
+    glm::mat4 mat_arbre7 = glm::translate(glm::mat4(1.0f), glm::vec3(1.8f, 0.0f, 16.02f)) * glm::scale(glm::mat4(1.0f), glm::vec3(taille7));
+    Node* node_arbre7 = new Node(mat_arbre7);
+    node_arbre7->add(arbre7);
+    viewer.scene_root->add(node_arbre7);
+
+    // Arbre 8
+    Arbre* arbre8 = new Arbre(uniform_shader);
+    float taille8 = random_float(1.5f, 2.5f);
+    glm::mat4 mat_arbre8 = glm::translate(glm::mat4(1.0f), glm::vec3(31.109f, 0.0f, 13.8f)) * glm::scale(glm::mat4(1.0f), glm::vec3(taille8));
+    Node* node_arbre8 = new Node(mat_arbre8);
+    node_arbre8->add(arbre8);
+    viewer.scene_root->add(node_arbre8);
+
+    // Arbre 9
+    Arbre* arbre9 = new Arbre(uniform_shader);
+    float taille9 = random_float(1.5f, 2.5f);
+    glm::mat4 mat_arbre9 = glm::translate(glm::mat4(1.0f), glm::vec3(41.3f, 0.0f, 7.6f)) * glm::scale(glm::mat4(1.0f), glm::vec3(taille9));
+    Node* node_arbre9 = new Node(mat_arbre9);
+    node_arbre9->add(arbre9);
+    viewer.scene_root->add(node_arbre9);
+
+    // Arbre 10
+    Arbre* arbre10 = new Arbre(uniform_shader);
+    float taille10 = random_float(1.5f, 2.5f);
+    glm::mat4 mat_arbre10 = glm::translate(glm::mat4(1.0f), glm::vec3(47.98f, 0.0f, -40.0f)) * glm::scale(glm::mat4(1.0f), glm::vec3(taille10));
+    Node* node_arbre10 = new Node(mat_arbre10);
+    node_arbre10->add(arbre10);
+    viewer.scene_root->add(node_arbre10);
+
+    // Arbre 11
+    Arbre* arbre11 = new Arbre(uniform_shader);
+    float taille11 = random_float(1.5f, 2.5f);
+    glm::mat4 mat_arbre11 = glm::translate(glm::mat4(1.0f), glm::vec3(29.2f, 0.0f, -11.15f)) * glm::scale(glm::mat4(1.0f), glm::vec3(taille11));
+    Node* node_arbre11 = new Node(mat_arbre11);
+    node_arbre11->add(arbre11);
+    viewer.scene_root->add(node_arbre11);
+
+    // Arbre 12
+    Arbre* arbre12 = new Arbre(uniform_shader);
+    float taille12 = random_float(1.5f, 2.5f);
+    glm::mat4 mat_arbre12 = glm::translate(glm::mat4(1.0f), glm::vec3(-38.8f, 0.0f, -43.6f)) * glm::scale(glm::mat4(1.0f), glm::vec3(taille12));
+    Node* node_arbre12 = new Node(mat_arbre12);
+    node_arbre12->add(arbre12);
+    viewer.scene_root->add(node_arbre12);
 
 
 

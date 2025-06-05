@@ -111,7 +111,7 @@ void Viewer::run()
             camera_pos += glm::normalize(glm::cross(camera_front, camera_up)) * velocity; */
 
         float vitesse_avant = 7.0f * delta_time;        // vitesse de deplacement avant
-        float vitesse_sprint = 8.0 * delta_time;
+        float vitesse_sprint = 10.0 * delta_time;
         float vitesse_recul = 4.0 * delta_time;         //vitesse de recul
         float vitesse_rotation = 90.0f * delta_time; // degres/s lors de la pivotation gauche/droite
 
@@ -203,10 +203,10 @@ void Viewer::run()
         // LOGS VOITURE
         glm::mat4 voiture_transform = voiture_node->getTransform();
         glm::vec3 voiture_pos(voiture_transform[3][0], voiture_transform[3][1], voiture_transform[3][2]);
-        std::cout << "Voiture position: ("
+        /*std::cout << "Voiture position: ("
             << voiture_pos.x << ", "
             << voiture_pos.y << ", "
-            << voiture_pos.z << ")\n";
+            << voiture_pos.z << ")\n";*/
 
         // LOGS CAMERA
         /*

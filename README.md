@@ -23,6 +23,9 @@ Our scene was made using many of the concepts we learned in class, including:
 - The **car** is modeled triangle by triangle using **VBOs and IBOs**, and it uses a **node system**:
   - The main car body is made of triangles.
   - The 4 wheels are cylinders attached as child nodes.
+  - The body mesh was created based on a hand-drawn sketch where we placed key 3D coordinates (like wheel positions, windows, roof, etc.).
+This helped us visualize the car's proportions before translating it into vertex data manually. <img src="blender_models/draftCar.png" width="50%" alt="Car Sketch">
+
 - **Buildings**:
   - Houses are made of a textured cube (walls *(many textures)*) and a colored pyramid (roof).
   - HLM buildings use one texture for the whole block.

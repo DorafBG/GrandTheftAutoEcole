@@ -85,6 +85,11 @@ This helps us apply transformations more easily (scale, rotation, translation).
 
 - The total distance driven by the car is shown in the **window title** (since OpenGL doesn't support text directly).
 
+### Blender Models
+
+We created several 3D models using **Blender**, like more detailed versions of buildings and objects.  
+However, we couldn't import them into the project because they had too many triangles for OpenGL in real-time.  
+
 ---
 
 ## How to Run the Project

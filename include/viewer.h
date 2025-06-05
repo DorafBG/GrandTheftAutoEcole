@@ -16,7 +16,7 @@
 
 class Viewer {
 public:
-    Viewer(int width = 640, int height = 480);
+    Viewer(int width = 1100, int height = 800);
 
     void run();
     void on_key(int key);

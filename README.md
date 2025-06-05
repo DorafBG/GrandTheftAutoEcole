@@ -1,5 +1,9 @@
 # GrandTheftAutoEcole
 
+<img src="blender_models/screenshot.png" width="50%" alt="Car Sketch">
+
+*(video at the end ;) )*
+
 ## Project Description
 
 This is our final project for the **Introduction to Computer Graphics** course.  
@@ -136,6 +140,6 @@ However, we couldn't import them into the project because they had too many tria
 ## Demo Video
 
 Watch the project in action on YouTube:  
-**[https://youtube.com/](#)**
+**[https://youtu.be/ueiyqo8FR_c](https://youtu.be/ueiyqo8FR_c)**
 
 ---

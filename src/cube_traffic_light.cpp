@@ -1,4 +1,6 @@
 #include "cube_traffic_light.h"
+#include "cubesimple.h"
+#include <iostream>
 
 CubeTrafficLight::CubeTrafficLight(Shader* shader, const glm::vec3& size)
     : CubeSimple(shader, size), dynamic_color_(glm::vec3(1.0f))
@@ -20,4 +22,9 @@ void CubeTrafficLight::draw(glm::mat4& model, glm::mat4& view, glm::mat4& projec
 
     glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+    /*std::cout << "Drawing traffic light cube, color = "
+          << dynamic_color_.x << ", "
+          << dynamic_color_.y << ", "
+          << dynamic_color_.z << std::endl;*/
+
 }

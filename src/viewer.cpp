@@ -54,7 +54,8 @@ Viewer::Viewer(int width, int height)
               << glGetString(GL_RENDERER) << std::endl;
 
     // initialize GL by setting viewport and default render characteristics
-    glClearColor(0.1f, 0.1f, 0.1f, 0.1f);
+    glClearColor(0.529f, 0.808f, 0.922f, 1.0f);
+
 
     /* tell GL to only draw onto a pixel if the shape is closer to the viewer
     than anything already drawn at that pixel */
@@ -202,12 +203,13 @@ void Viewer::run()
         // LOGS VOITURE
         glm::mat4 voiture_transform = voiture_node->getTransform();
         glm::vec3 voiture_pos(voiture_transform[3][0], voiture_transform[3][1], voiture_transform[3][2]);
-        std::cout << "Voiture position: ("
+        /*std::cout << "Voiture position: ("
             << voiture_pos.x << ", "
             << voiture_pos.y << ", "
-            << voiture_pos.z << ")\n";
+            << voiture_pos.z << ")\n";*/
 
         // LOGS CAMERA
+        /*
         std::cout << "Camera position: ("
             << camera_pos.x << ", "
             << camera_pos.y << ", "
@@ -216,7 +218,7 @@ void Viewer::run()
         std::cout << "Camera front: ("
             << camera_front.x << ", "
             << camera_front.y << ", "
-            << camera_front.z << ")\n";
+            << camera_front.z << ")\n"; */
 
 
 
@@ -226,20 +228,26 @@ void Viewer::run()
 
         camera_pos = glm::vec3(camera_x, camera_y, camera_z);
 
-        // La cam�ra regarde toujours vers la voiture
-        glm::vec3 camera_target = voiture_pos + glm::vec3(0.0f, 1.0f, 0.0f); // L�g�rement au-dessus du centre de la voiture
+        // La camera regarde toujours vers la voiture
+        glm::vec3 camera_target = voiture_pos + glm::vec3(0.0f, 1.0f, 0.0f); // Legerement au-dessus du centre de la voiture
 
         //// Calculer la matrice de vue
         glm::mat4 view = glm::lookAt(camera_pos, camera_target, glm::vec3(0.0f, 1.0f, 0.0f));
-
-
-
-
 
         //glm::mat4 view = glm::lookAt(camera_pos, camera_pos + camera_front, camera_up);
 
         float renderDistance = 500.0f;
         glm::mat4 projection = glm::perspective(glm::radians(45.0f), 1.0f, 0.1f, renderDistance);
+
+        glm::vec3 soleil_pos(0, 30, -60);
+        glm::vec3 soleil_couleur(1.0f, 1.0f, 0.8f);
+
+        GLuint pid = phong_shader->get_id();
+        glUseProgram(pid);
+
+        glUniform3fv(glGetUniformLocation(pid, "lightPos"), 1, glm::value_ptr(soleil_pos));
+        glUniform3fv(glGetUniformLocation(pid, "lightColor"), 1, glm::value_ptr(soleil_couleur));
+
 
         scene_root->draw(model, view, projection);
 
@@ -288,28 +296,14 @@ void Viewer::on_mouse_move(double xpos, double ypos)
     xoffset *= sensitivity;
     yoffset *= sensitivity; 
 
-    //yaw += xoffset;
-    //pitch += yoffset;
-
-    //if (pitch > 89.0f)
-    //    pitch = 89.0f;
-    //if (pitch < -89.0f)
-    //    pitch = -89.0f;
-
     camera_yaw += xoffset;
     camera_pitch += yoffset;
 
-    // Limiter l'angle vertical pour �viter les retournements
+    // Limiter l'angle vertical pour eviter les retournements
     if (camera_pitch > 45.0f)
         camera_pitch = 45.0f;
-    if (camera_pitch < -3.0f)        // CHANG�: limite � 0� (horizontal) au lieu de -80�
+    if (camera_pitch < -3.0f)   
         camera_pitch = -3.0f;
-
-    //glm::vec3 direction;
-    //direction.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
-    //direction.y = sin(glm::radians(pitch));
-    //direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
-    //camera_front = glm::normalize(direction);
 }
 
 

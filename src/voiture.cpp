@@ -6,6 +6,14 @@
 Voiture::Voiture(Shader* shader_program, Texture* texture_bleu, Texture* texture_noir)
     : Shape(shader_program), texture_bleu(texture_bleu), texture_noir(texture_noir)
 {
+    // lumiere
+    light_dir_loc = glGetUniformLocation(shader_program_, "lightDir");
+    light_color_loc = glGetUniformLocation(shader_program_, "lightColor");
+    view_pos_loc = glGetUniformLocation(shader_program_, "viewPos");
+    light_dir = glm::vec3(-1.0f, -1.0f, -1.0f);
+    light_color = glm::vec3(1.0f, 1.0f, 1.0f);
+    view_pos = glm::vec3(0.0f, 0.0f, 5.0f);
+
     // cube ecrase pr faire une voiture
     float vertices[] = {
         // positions           // UV coords
@@ -110,17 +118,15 @@ Voiture::Voiture(Shader* shader_program, Texture* texture_bleu, Texture* texture
 
 void Voiture::draw(glm::mat4& model, glm::mat4& view, glm::mat4& projection)
 {
-    /*glUseProgram(this->shader_program_);
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, texture->getGLid());
-    glUniform1i(loc_diffuse_map, 0);
-    glBindVertexArray(VAO);
-    Shape::draw(model, view, projection);
-    glDrawElements(GL_TRIANGLES, 126, GL_UNSIGNED_INT, 0);*/
+
     glUseProgram(this->shader_program_);
 
     glBindVertexArray(VAO);
     loc_diffuse_map = glGetUniformLocation(shader_program_, "diffuse_map");
+
+    glUniform3fv(light_dir_loc, 1, glm::value_ptr(light_dir));
+    glUniform3fv(light_color_loc, 1, glm::value_ptr(light_color));
+    glUniform3fv(view_pos_loc, 1, glm::value_ptr(view_pos));
 
     // Dessiner les triangles bleus
     glActiveTexture(GL_TEXTURE0);

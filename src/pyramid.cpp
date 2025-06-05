@@ -2,6 +2,7 @@
 
 #include <iostream>
 
+
 Pyramid::Pyramid(Shader *shader_program, const glm::vec3& color) : Shape(shader_program), color_(color)
 {
     // Pyramid vertex positions

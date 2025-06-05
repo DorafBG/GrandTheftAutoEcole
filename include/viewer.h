@@ -12,6 +12,7 @@
 #include <vector>
 #include "eolienne.h"
 #include "traffic_light.h"
+#include "arbre.h"
 
 class Viewer {
 public:
@@ -23,14 +24,13 @@ public:
     Node* scene_root;
 
     // Camera control
-    glm::vec3 camera_pos = glm::vec3(-4.73608f, 22.9012f, -2.93041f); // coordonnees camera par defaut
-    glm::vec3 camera_front = glm::vec3(0.586349f, -0.810042f, -0.00511719f);//la camera regarde vers le sol (quand je mets x=0 et z=0, elle ne regarde plus le sol jsp pk)
+    glm::vec3 camera_pos = glm::vec3(-17.4414f, 20.0f, 5.0f);
+    glm::vec3 camera_front = glm::vec3(0.0f, -0.933f, -0.360f);
+
+
     glm::vec3 camera_up = glm::vec3(0.0f, 1.0f, 0.0f);
 
     Node* voiture_node;  // pointeur vers le noeud de la voiture
-
-    float yaw = -90.0f;
-    float pitch = -15.0f;
     float last_x = 320.0f;
     float last_y = 240.0f;
     bool first_mouse = true;
@@ -38,8 +38,8 @@ public:
 
     float camera_distance = 10.0f;
     float camera_height_offset = 3.0f;
-    float camera_yaw = 0.0f;
-    float camera_pitch = -20.0f;
+    float camera_yaw = 180.0f;
+    float camera_pitch = 10.0f;
 
     float delta_time = 0.0f;
     float last_frame = 0.0f;
@@ -51,6 +51,9 @@ public:
 
     std::vector<Eolienne*> eoliennes;
     std::vector<TrafficLight*> traffic_lights;
+
+    Shader* phong_shader = nullptr;
+
 
 
 private:

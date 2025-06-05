@@ -5,6 +5,7 @@
 #include "shader.h"
 #include "texture.h"
 #include <GL/glew.h>
+#include <glm/glm.hpp>
 
 class Voiture : public Shape {
 public:
@@ -21,6 +22,9 @@ private:
     Texture* texture_bleu;
     Texture* texture_noir;
     GLuint loc_diffuse_map;
+
+    glm::vec3 light_dir, light_color, view_pos;
+    GLint light_dir_loc, light_color_loc, view_pos_loc;
 
     int num_indices_bleu;
     int num_indices_noir;

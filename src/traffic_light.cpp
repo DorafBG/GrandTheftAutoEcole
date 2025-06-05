@@ -1,4 +1,5 @@
 #include "traffic_light.h"
+#include "cube_traffic_light.h"
 #include <glm/gtc/matrix_transform.hpp>
 #include <iostream>
 
